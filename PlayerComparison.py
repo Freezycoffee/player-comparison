@@ -33,12 +33,9 @@ params_df = ['Duels per 90', 'Successful defensive actions per 90', 'Aerial duel
 params_att = ['Successful attacking actions per 90', 'Goals per 90', 'Non-penalty goals per 90', 'xG per 90', 'Shots per 90', 'Assists per 90', 'Crosses per 90','Dribbles per 90', 'Touches in box per 90']
 params_mf = [ 'xA per 90',  'Assists per 90', 'Key passes per 90', 'Passes to final third per 90', 'Passes to penalty area per 90', 'Through passes per 90', 'Progressive passes per 90',]
 params_gk = [ 'Conceded goals per 90', 'Shots against per 90', 'xG against per 90', 'Prevented goals per 90', 'Back passes received as GK per 90', 'Exits per 90',]
-max_df = [df[x].max() for x in params_df]
-max_att = [df[x].max() for x in params_att]
-max_mf = [df[x].max() for x in params_mf]
-max_gk = [df[x].max() for x in params_gk]
+
 params_dict = {"GK":params_gk,"DF":params_df,"MF":params_mf,"FW":params_att}
-max_dict = {"GK":max_gk,"DF":max_df,"MF":max_mf,"FW":max_att}
+
 
 st.title("BRI LIGA 1 - Player Comparison")
 col1, col2 = st.columns(2)
@@ -61,17 +58,17 @@ with col2:
 def show_plot():
     if position1 == position2:
         selected_params = params_dict[position1]
-        max_params = max_dict[position1]
     else:
         raise ValueError("Positions must be the same")
     
     comparison1 = df[df['player_name'] == selected_player_1]
     comparison2 = df[df['player_name'] == selected_player_2]
 
-    player_1_values = 100*player_1[player_1['player_name'] == selected_player_1][selected_params].values[0]/max_params
-    player_2_values = 100*player_2[player_2['player_name'] == selected_player_2][selected_params].values[0]/max_params
-    player_1_values = [round(x,2) for x in player_1_values]
-    player_2_values = [round(x,2) for x in player_2_values]
+    player_1_values = player_1[player_1['player_name'] == selected_player_1][selected_params].values[0]
+    player_2_values = player_2[player_2['player_name'] == selected_player_2][selected_params].values[0]
+
+    player_1_values = [100*round(len(df[df[x]<y])/len(df),2) for y,x in zip(player_1_values,selected_params)]
+    player_2_values = [100*round(len(df[df[x]<y])/len(df),2) for y,x in zip(player_2_values,selected_params)]
 
 
 
