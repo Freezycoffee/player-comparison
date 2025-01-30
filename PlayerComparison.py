@@ -66,9 +66,8 @@ def show_plot():
 
     player_1_values = player_1[player_1['player_name'] == selected_player_1][selected_params].values[0]
     player_2_values = player_2[player_2['player_name'] == selected_player_2][selected_params].values[0]
-
-    player_1_values = [100*round(len(df[df[x]<y])/len(df),2) for y,x in zip(player_1_values,selected_params)]
-    player_2_values = [100*round(len(df[df[x]<y])/len(df),2) for y,x in zip(player_2_values,selected_params)]
+    player_1_values = [100*round(len(df[(df[x]<y)&(df['pos']==comparison1['pos'].values[0])])/len(df[df['pos']==comparison1['pos'].values[0]]),2) for y,x in zip(player_1_values,selected_params)]
+    player_2_values = [100*round(len(df[(df[x]<y)&(df['pos']==comparison2['pos'].values[0])])/len(df[df['pos']==comparison2['pos'].values[0]]),2) for y,x in zip(player_2_values,selected_params)]
 
 
 
